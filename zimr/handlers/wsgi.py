@@ -1,6 +1,9 @@
-import zimr, urllib
+import zimr, urllib, sys
 from urlparse import urlparse
 from StringIO import StringIO
+
+# http://www.python.org/dev/peps/pep-0333/
+# http://en.wikipedia.org/wiki/Web_Server_Gateway_Interface
 
 class ZimrLogIO( StringIO ):
 
@@ -32,7 +35,7 @@ def connection_handler(  application, connection ):
 
 	environ = {
 		'REQUEST_METHOD': connection.request.method,
-		'SCRIPT_NAME': server.path if server.path != '/' else '',
+		'SCRIPT_NAME': '/' + server.path.strip('/') if server.path != '/' else '',
 		'PATH_INFO': '/' + connection.request.url if connection.request.url else '',
 		'QUERY_STRING': '&'.join([k+'='+urllib.quote(str(v)) for (k,v) in connection.request.params.items()]),
 		'CONTENT_TYPE': connection.request.headers['Content-Type'],
@@ -43,7 +46,7 @@ def connection_handler(  application, connection ):
 		'wsgi.version': (1,0),
 		'wsgi.url_scheme': server.scheme,
 		'wsgi.input': StringIO( connection.request.post_body ),
-		'wsgi.errors': ZimrLogIO(),
+		'wsgi.errors': sys.stderr,
 		'wsgi.multithread': False,
 		'wsgi.multiprocess': False,
 		'wsgi.run_once': False
