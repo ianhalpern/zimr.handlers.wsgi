@@ -37,7 +37,7 @@ def connection_handler(  application, connection ):
 		'REQUEST_METHOD': connection.request.method,
 		'SCRIPT_NAME': '/' + server.path.strip('/') if server.path != '/' else '',
 		'PATH_INFO': '/' + connection.request.url if connection.request.url else '',
-		'QUERY_STRING': '&'.join([k+'='+urllib.quote(str(v)) for (k,v) in connection.request.get.items()]),
+		'QUERY_STRING': '&'.join([k+'='+urllib.quote(str(v)) for (k,v) in connection.request.get_params.items()]),
 		'CONTENT_TYPE': connection.request.headers['Content-Type'],
 		'CONTENT_LENGTH': connection.request.headers['Content-Length'],
 		'SERVER_NAME': server.hostname,
