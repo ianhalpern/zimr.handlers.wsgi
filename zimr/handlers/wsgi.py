@@ -5,6 +5,8 @@ from StringIO import StringIO
 # http://www.python.org/dev/peps/pep-0333/
 # http://en.wikipedia.org/wiki/Web_Server_Gateway_Interface
 
+zimr.default_website_options['PARSE_MULTIPART'] = False
+
 class ZimrLogIO( StringIO ):
 
 	def flush( self ):
